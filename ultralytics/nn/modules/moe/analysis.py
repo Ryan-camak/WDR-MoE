@@ -4,8 +4,6 @@ import torch
 import argparse
 import numpy as np
 from collections import defaultdict
-import matplotlib.pyplot as plt
-import seaborn as sns
 import os
 from typing import Dict, Set, List, Tuple
 from dataclasses import dataclass
@@ -309,6 +307,11 @@ class ExpertUsageTracker:
         """
         if not layers:
             return
+
+        # Plotting dependencies are optional and only required for diagnostics.
+        # Keeping these imports local allows core MoE models to run without seaborn.
+        import matplotlib.pyplot as plt
+        import seaborn as sns
 
         max_expert_id = max(all_experts) if all_experts else 0
         num_experts = max_expert_id + 1
