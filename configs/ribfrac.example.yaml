@@ -1,0 +1,12 @@
+# Copy to configs/ribfrac.yaml and replace the path below.
+# Expected layout:
+#   /path/to/ribfrac_dataset/
+#     images/train, images/val
+#     labels/train, labels/val
+
+path: /path/to/ribfrac_dataset
+train: images/train
+val: images/val
+
+names:
+  0: rib_fracture

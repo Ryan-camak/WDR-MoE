@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: WDR-MoE reference implementation
+message: If you use this software, please cite the WDR-MoE paper.
+type: software
+authors:
+  - family-names: Jhong
+    given-names: Sin-Ye
+  - family-names: Lin
+    given-names: Bo-Xian
+  - family-names: Li
+    given-names: Shang-Lin
+  - family-names: Chen
+    given-names: Yung-Yao
+  - family-names: Luo
+    given-names: Huai-An
+license: AGPL-3.0
+repository-code: "https://github.com/Ryan-camak/WDR-MoE"
+preferred-citation:
+  type: conference-paper
+  title: "WDR-MoE: Frequency-Aware Mixture-of-Experts for Fracture Detection in AI-Assisted Medical Imaging"
+  authors:
+    - family-names: Jhong
+      given-names: Sin-Ye
+    - family-names: Lin
+      given-names: Bo-Xian
+    - family-names: Li
+      given-names: Shang-Lin
+    - family-names: Chen
+      given-names: Yung-Yao
+    - family-names: Luo
+      given-names: Huai-An
+  year: 2026

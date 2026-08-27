@@ -1,0 +1,14 @@
+# Copy to configs/fracatlas.yaml and replace the path below.
+# Expected layout:
+#   /path/to/fracatlas/
+#     train/images, train/labels
+#     valid/images, valid/labels
+#     test/images, test/labels
+
+path: /path/to/fracatlas
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: fracture
