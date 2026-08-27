@@ -643,7 +643,14 @@ def apply_lora(
         DetectionModel: The modified model instance with LoRA enabled 
                         (class swapped to LoRADetectionModel).
     """
-    # 0. Check Dependencies
+    # 0. Resolve configuration before checking optional dependencies. Standard
+    # training keeps LoRA disabled and should not require PEFT to be installed.
+    config = LoRAConfig.from_args(args, **kwargs)
+    if config.r <= 0 and config.auto_r_ratio <= 0:
+        LOGGER.info("[LoRA] Disabled (r=0).")
+        return model
+
+    # 1. Check dependencies only when LoRA is enabled.
     if not PEFT_AVAILABLE:
         LOGGER.error("[LoRA] PEFT library not found. Please install via `pip install peft`.")
         return model
@@ -657,20 +664,12 @@ def apply_lora(
             LOGGER.error("[LoRA] bitsandbytes not found. Install via `pip install bitsandbytes`. Quantization disabled.")
             kwargs['lora_quantization'] = 'none'
 
-    # 1. Prevent Re-application
+    # 2. Prevent Re-application
     if getattr(model, "lora_enabled", False):
         LOGGER.warning("[LoRA] Model already has LoRA enabled. Skipping re-application.")
         return model
 
-    # 2. Initialize Configuration
-    config = LoRAConfig.from_args(args, **kwargs)
-
-    # Check if LoRA should be enabled
-    if config.r <= 0 and config.auto_r_ratio <= 0:
-        LOGGER.info("[LoRA] Disabled (r=0).")
-        return model
-
-    # 2.5 Auto-Disable MoE/Attention if not present in the model architecture
+    # 3. Auto-disable MoE/attention if not present in the model architecture
     # This prevents confusing logs claiming MoE is included when the model (e.g. YOLO11) has none.
     has_moe = False
     has_attn = False

@@ -45,6 +45,7 @@ FDR uses globally pooled context to produce sparse top-k routing probabilities. 
 .
 ├── assets/results/              # Curated metrics and aggregate plots
 ├── configs/                     # Dataset YAML templates
+├── environment.yml              # Reproducible Conda environment
 ├── img/                         # Architecture and qualitative figures
 ├── ultralytics/
 │   ├── cfg/models/master/       # Baseline and published WDR-MoE definitions
@@ -55,18 +56,25 @@ FDR uses globally pooled context to produce sparse top-k routing probabilities. 
 └── test_wavelet_moe.py          # Fixed-Haar WFE smoke test
 ```
 
-## Installation
+## Installation with Conda
 
-Python 3.10 or newer is recommended. Install PyTorch for your CUDA version first, then install this repository in editable mode:
+Clone the repository and create the provided Python 3.10 Conda environment:
 
 ```bash
 git clone https://github.com/Ryan-camak/WDR-MoE.git
 cd WDR-MoE
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+conda env create -f environment.yml
+conda activate wdr-moe
 ```
+
+The environment file installs this repository and its required dependencies in editable mode. Verify the installation before preparing a dataset:
+
+```bash
+python -c "import torch; from ultralytics import YOLO; print('PyTorch:', torch.__version__); print('CUDA:', torch.cuda.is_available())"
+python test_wavelet_moe.py
+```
+
+The default dependency resolver installs a compatible PyTorch package. If a specific CUDA build is required, create and activate the environment first, install the matching PyTorch build using the command from the [official PyTorch selector](https://pytorch.org/get-started/locally/), and then run `python -m pip install -e .` again inside `wdr-moe`. Do not install a separate global Ultralytics package, because this repository contains the modified WDR-MoE implementation.
 
 ## Datasets
 

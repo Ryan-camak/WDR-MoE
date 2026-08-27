@@ -45,6 +45,7 @@ FDR 從 global pooled context 產生 sparse top-k routing probabilities，再依
 .
 ├── assets/results/              # 整理後的實驗指標與彙總圖
 ├── configs/                     # 資料集 YAML 範本
+├── environment.yml              # 可重現的 Conda 環境
 ├── img/                         # 架構圖與定性比較圖
 ├── ultralytics/
 │   ├── cfg/models/master/       # Baseline 與正式 WDR-MoE 設定
@@ -55,18 +56,25 @@ FDR 從 global pooled context 產生 sparse top-k routing probabilities，再依
 └── test_wavelet_moe.py          # 固定 Haar WFE smoke test
 ```
 
-## 安裝
+## 使用 Conda 安裝
 
-建議使用 Python 3.10 以上版本。先依 CUDA 版本安裝 PyTorch，再安裝本專案：
+Clone repository，並以提供的設定建立 Python 3.10 Conda 環境：
 
 ```bash
 git clone https://github.com/Ryan-camak/WDR-MoE.git
 cd WDR-MoE
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+conda env create -f environment.yml
+conda activate wdr-moe
 ```
+
+`environment.yml` 會在 Conda 環境內以 editable mode 安裝本 repository 與必要套件。準備資料集前，請先確認安裝成功：
+
+```bash
+python -c "import torch; from ultralytics import YOLO; print('PyTorch:', torch.__version__); print('CUDA:', torch.cuda.is_available())"
+python test_wavelet_moe.py
+```
+
+預設依賴解析會安裝相容的 PyTorch。若需要指定 CUDA build，請先建立並啟用 `wdr-moe` 環境，再依 [PyTorch 官方 selector](https://pytorch.org/get-started/locally/) 提供的指令安裝對應版本，最後在同一環境內重新執行 `python -m pip install -e .`。請勿另外安裝全域 Ultralytics package，因為本 repository 已包含修改後的 WDR-MoE 實作。
 
 ## 資料集
 
